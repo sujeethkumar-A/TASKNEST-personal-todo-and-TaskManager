@@ -1,6 +1,7 @@
 package com.example.tasknest.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -11,7 +12,12 @@ public class User {
     private Long id;
 
     private String name;
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @JsonIgnore
+    @Column
+    private String passwordHash;
 
     public User() {
     }
@@ -44,5 +50,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

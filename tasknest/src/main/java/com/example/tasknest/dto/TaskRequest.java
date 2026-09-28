@@ -1,11 +1,19 @@
 package com.example.tasknest.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import com.example.tasknest.enums.Priority;
 import java.time.LocalDate;
 
 public class TaskRequest {
+    @NotBlank
     private String title;
+    @Positive
     private long taskListId;
+    @NotNull
     private LocalDate dueDate;
+    @NotNull
     private Priority priority;
     public TaskRequest() {
     }

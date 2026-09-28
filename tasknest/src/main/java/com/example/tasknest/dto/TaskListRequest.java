@@ -1,6 +1,11 @@
 package com.example.tasknest.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class TaskListRequest {
+    @NotBlank
+    @Size(max = 100)
     private String name;
     private Long userId;
 

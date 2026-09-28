@@ -21,8 +21,11 @@ public class TaskListService {
         this.userRepository = userRepository;
     }
 
-    public TaskList createTaskList(TaskListRequest request) {
-        User user = userRepository.findById(request.getUserId()).orElse(null);
+    public TaskList createTaskList(TaskListRequest request, Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return null;
+        }
 
         TaskList taskList = new TaskList();
         taskList.setName(request.getName());
@@ -31,11 +34,14 @@ public class TaskListService {
         return taskListRepository.save(taskList);
     }
 
-    public List<TaskList> getAllTaskLists() {
-        return taskListRepository.findAll();
+    public List<TaskList> getAllTaskLists(Long userId) {
+        return taskListRepository.findAllByUser_Id(userId);
     }
 
-    public TaskList getTaskListById(Long id) {
-        return taskListRepository.findById(id).orElse(null);
+    public TaskList getTaskListById(Long id, Long userId) {
+        return taskListRepository.findById(id)
+                .filter(taskList -> taskList.getUser() != null
+                        && userId.equals(taskList.getUser().getId()))
+                .orElse(null);
     }
 }

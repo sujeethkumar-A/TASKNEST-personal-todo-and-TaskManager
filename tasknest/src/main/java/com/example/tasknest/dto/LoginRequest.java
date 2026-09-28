@@ -2,38 +2,14 @@ package com.example.tasknest.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-public class UserRequest {
-    @NotBlank
-    @Size(max = 100)
-    private String name;
-
+public class LoginRequest {
     @NotBlank
     @Email
-    @Size(max = 254)
     private String email;
 
     @NotBlank
-    @Size(min = 8, max = 256)
     private String password;
-
-    public UserRequest() {
-    }
-
-    public UserRequest(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;

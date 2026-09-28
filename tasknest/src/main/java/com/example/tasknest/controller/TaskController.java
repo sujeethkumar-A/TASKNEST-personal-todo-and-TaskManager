@@ -3,9 +3,11 @@ package com.example.tasknest.controller;
 import com.example.tasknest.dto.TaskRequest;
 import com.example.tasknest.entity.Task;
 import com.example.tasknest.service.TaskService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
@@ -18,42 +20,79 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody TaskRequest request) {
-        return taskService.createTask(request);
+    public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest request, HttpSession session) {
+        Long userId = getSessionUserId(session);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Task task = taskService.createTask(request, userId);
+        return task == null ? ResponseEntity.notFound().build() : ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public ResponseEntity<?> getAllTasks(HttpSession session) {
+        Long userId = getSessionUserId(session);
+        return userId == null
+                ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+                : ResponseEntity.ok(taskService.getAllTasks(userId));
     }
 
     @GetMapping("/today")
-    public List<Task> getTodaysTasks() {
-        return taskService.getTodaysTasks();
+    public ResponseEntity<?> getTodaysTasks(HttpSession session) {
+        Long userId = getSessionUserId(session);
+        return userId == null
+                ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+                : ResponseEntity.ok(taskService.getTodaysTasks(userId));
     }
 
     @GetMapping("/overdue")
-    public List<Task> getOverdueTasks() {
-        return taskService.getOverdueTasks();
+    public ResponseEntity<?> getOverdueTasks(HttpSession session) {
+        Long userId = getSessionUserId(session);
+        return userId == null
+                ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+                : ResponseEntity.ok(taskService.getOverdueTasks(userId));
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public ResponseEntity<?> getTaskById(@PathVariable Long id, HttpSession session) {
+        Long userId = getSessionUserId(session);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ofNullable(taskService.getTaskById(id, userId));
     }
 
     @PutMapping("/{id}/complete")
-    public Task markComplete(@PathVariable Long id) {
-        return taskService.markComplete(id);
+    public ResponseEntity<?> markComplete(@PathVariable Long id, HttpSession session) {
+        Long userId = getSessionUserId(session);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ofNullable(taskService.markComplete(id, userId));
     }
 
     @PutMapping("/{id}/incomplete")
-    public Task markIncomplete(@PathVariable Long id) {
-        return taskService.markIncomplete(id);
+    public ResponseEntity<?> markIncomplete(@PathVariable Long id, HttpSession session) {
+        Long userId = getSessionUserId(session);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ofNullable(taskService.markIncomplete(id, userId));
     }
+
     @PutMapping("/{taskId}/move/{taskListId}")
-public Task moveTask(@PathVariable Long taskId,
-                     @PathVariable Long taskListId) {
-    return taskService.moveTask(taskId, taskListId);
-}
+    public ResponseEntity<?> moveTask(@PathVariable Long taskId,
+                                      @PathVariable Long taskListId,
+                                      HttpSession session) {
+        Long userId = getSessionUserId(session);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ofNullable(taskService.moveTask(taskId, taskListId, userId));
+    }
+
+    private Long getSessionUserId(HttpSession session) {
+        Object userId = session.getAttribute("userId");
+        return userId instanceof Long id ? id : null;
+    }
 }

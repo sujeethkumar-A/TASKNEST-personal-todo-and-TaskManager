@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskNest</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main id="authView" class="auth-view" hidden>
+      <section class="auth-intro">
+        <div class="brand-box">
+          <div class="brand-icon">T</div>
+          <h2>TaskNest</h2>
+        </div>
+        <p class="eyebrow">A calmer way to plan</p>
+        <h1>Make room for what matters.</h1>
+        <p>Gather your tasks, deadlines, and plans in one place.</p>
+      </section>
+      <section class="auth-panel" aria-labelledby="authTitle">
+        <p class="eyebrow">Your workspace</p>
+        <h2 id="authTitle">Welcome back</h2>
+        <p id="authDescription" class="auth-description">Sign in to continue to your tasks.</p>
+        <form id="authForm" class="stack-form" data-mode="login">
+          <label id="authNameField" hidden>
+            <span>Name</span>
+            <input id="authName" type="text" autocomplete="name" maxlength="100" />
+          </label>
+          <label>
+            <span>Email</span>
+            <input id="authEmail" type="email" autocomplete="email" maxlength="254" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="authPassword" type="password" autocomplete="current-password" minlength="8" maxlength="256" required />
+          </label>
+          <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+          <button id="authSubmit" class="primary-button full-width" type="submit">Sign in</button>
+        </form>
+        <button id="authModeToggle" class="auth-toggle" type="button">Create an account</button>
+      </section>
+    </main>
+
+    <div id="appShell" class="app-shell" hidden>
+      <aside class="sidebar">
+        <div class="brand-box">
+          <div class="brand-icon">T</div>
+          <div>
+            <h2>TaskNest</h2>
+          </div>
+        </div>
+
+        <nav class="nav-menu" aria-label="Sidebar navigation">
+          <button class="nav-item active" data-nav="dashboard" type="button">Dashboard</button>
+          <button class="nav-item" data-nav="today" type="button">Today</button>
+          <button class="nav-item" data-nav="my-lists" type="button">My Lists</button>
+          <button class="nav-item" data-nav="academics" type="button">Academics</button>
+          <button class="nav-item" data-nav="personal" type="button">Personal</button>
+          <button class="nav-item" data-nav="overdue" type="button">Overdue</button>
+          <button class="nav-item" data-nav="completed" type="button">Completed</button>
+        </nav>
+
+        <div class="sidebar-section">
+          <div class="section-heading-row">
+            <h3>Task Lists</h3>
+          </div>
+          <div id="taskListSidebar" class="task-list-sidebar"></div>
+        </div>
+
+        <div class="sidebar-section create-list-box">
+          <h3>Create New List</h3>
+          <form id="taskListForm" class="stack-form">
+            <label>
+              <span>List name</span>
+              <input id="taskListName" type="text" placeholder="e.g. Side Projects" required />
+            </label>
+            <button type="submit" class="primary-button full-width">Add List</button>
+          </form>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Personal To-Do dashboard</p>
+            <h1 id="pageTitle">Dashboard</h1>
+          </div>
+          <div class="topbar-actions">
+            <span id="signedInName" class="signed-in-name"></span>
+            <button id="logoutBtn" class="secondary-button" type="button">Sign out</button>
+            <button id="newTaskBtn" class="primary-button" type="button">+ New Task</button>
+          </div>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card">
+            <span>Total Tasks</span>
+            <strong id="totalTasksCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Today's Tasks</span>
+            <strong id="todayCount">0</strong>
+          </article>
+          <article class="stat-card warning">
+            <span>Overdue</span>
+            <strong id="overdueCount">0</strong>
+          </article>
+          <article class="stat-card success">
+            <span>Completed</span>
+            <strong id="completedCount">0</strong>
+          </article>
+        </section>
+
+        <section class="content-panel overview-panel">
+          <div class="panel-header">
+            <h2>Today's Tasks</h2>
+          </div>
+          <div id="todayTasksOverview" class="task-grid compact-grid"></div>
+        </section>
+
+        <section class="content-panel overview-panel">
+          <div class="panel-header">
+            <h2>Overdue Tasks</h2>
+          </div>
+          <div id="overdueTasksOverview" class="task-grid compact-grid"></div>
+        </section>
+
+        <section class="content-panel task-panel">
+          <div class="panel-header panel-header-with-controls">
+            <h2 id="taskPanelTitle">Task List</h2>
+            <div class="task-toolbar">
+              <input id="taskSearch" type="search" placeholder="Search tasks by title" aria-label="Search tasks" />
+            </div>
+          </div>
+
+          <div class="filter-row" aria-label="Task filters">
+            <button class="filter-button active" data-priority-filter="all" type="button">All</button>
+            <button class="filter-button" data-priority-filter="HIGH" type="button">High</button>
+            <button class="filter-button" data-priority-filter="MEDIUM" type="button">Medium</button>
+            <button class="filter-button" data-priority-filter="LOW" type="button">Low</button>
+            <button class="filter-button" data-priority-filter="completed" type="button">Completed</button>
+            <button class="filter-button" data-priority-filter="open" type="button">Open</button>
+          </div>
+
+          <div class="sort-row">
+            <label class="sort-label" for="taskSort">Sort by</label>
+            <select id="taskSort">
+              <option value="dueDate">Due date</option>
+              <option value="priority">Priority</option>
+              <option value="title">Title</option>
+            </select>
+          </div>
+
+          <div id="taskResults" class="task-grid"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="taskModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close="true"></div>
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>Create New Task</h2>
+          <button id="closeTaskModal" class="icon-button" type="button" aria-label="Close">×</button>
+        </div>
+
+        <form id="taskForm" class="stack-form">
+          <label>
+            <span>Title</span>
+            <input id="taskTitle" type="text" placeholder="Complete Java Assignment" required />
+          </label>
+
+          <label>
+            <span>Due Date</span>
+            <input id="taskDueDate" type="date" required />
+          </label>
+
+          <label>
+            <span>Priority</span>
+            <select id="taskPriority" required>
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM" selected>MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Task List</span>
+            <select id="taskListSelect" required></select>
+          </label>
+
+          <div class="modal-actions">
+            <button type="button" id="cancelTaskBtn" class="secondary-button">Cancel</button>
+            <button type="submit" class="primary-button">Save Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
