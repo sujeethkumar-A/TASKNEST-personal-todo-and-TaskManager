@@ -1,45 +1,51 @@
 package com.example.tasknest.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-@Entity 
-@Table (name= "task_lists")
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "task_lists")
 public class TaskList {
-    @Id 
-    @Generated Value(strategy = GenerationType.IDENTITY)
-    private long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
-    @ManyToOne 
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    public TaskList(){
 
+    public TaskList() {
     }
-    public TaskList(long id,String name, User user){
-        this.id=id;
-        this.name=name;
-        this.user=user;
+
+    public TaskList(Long id, String name, User user) {
+        this.id = id;
+        this.name = name;
+        this.user = user;
     }
-    public long getId(){
+
+    public Long getId() {
         return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setId(long id){
-        this.id=id;
-    }
-    public String getName(){
+
+    public String getName() {
         return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
     }
-    public void setName(String name){
-        this.name=name;
-    }
-    public User getUser(){
+
+    public User getUser() {
         return user;
     }
-    public void setUser(User user){
-        this.user=user;
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

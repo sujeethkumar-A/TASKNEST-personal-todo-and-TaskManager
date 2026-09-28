@@ -1,25 +1,30 @@
 package com.example.tasknest.dto;
 
 public class TaskListRequest {
- private String name;
- private String usetId;
- public TaskListRequest(){
+    private String name;
+    private Long userId;
 
- }
- public TaskListRequest(String name, String usetId){
-    this.name=name;
-    this.usetId=usetId;
- }
-    public String getName(){
+    public TaskListRequest() {
+    }
+
+    public TaskListRequest(String name, Long userId) {
+        this.name = name;
+        this.userId = userId;
+    }
+
+    public String getName() {
         return name;
     }
-    public void setName(String name){
-        this.name=name;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getUsetId(){
-        return usetId;
+
+    public Long getUserId() {
+        return userId;
     }
-    public void setUsetId(String usetId){
-        this.usetId=usetId;
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

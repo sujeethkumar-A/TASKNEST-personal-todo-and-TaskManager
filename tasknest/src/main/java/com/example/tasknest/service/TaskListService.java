@@ -22,11 +22,9 @@ public class TaskListService {
     }
 
     public TaskList createTaskList(TaskListRequest request) {
-
         User user = userRepository.findById(request.getUserId()).orElse(null);
 
         TaskList taskList = new TaskList();
-
         taskList.setName(request.getName());
         taskList.setUser(user);
 
