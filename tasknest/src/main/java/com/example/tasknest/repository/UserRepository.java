@@ -1,5 +1,7 @@
 package com.example.tasknest.repository;
 
-public class UserRepository {
-    
+import com.example.tasknest.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
 }
