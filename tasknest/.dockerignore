@@ -1,8 +1,0 @@
-.git
-.gitignore
-.vscode
-.idea
-target
-build
-*.log
-HELP.md
